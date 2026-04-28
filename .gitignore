@@ -1,0 +1,19 @@
+# .NET
+bin/
+obj/
+*.user
+.vs/
+.idea/
+*.suo
+*.nupkg
+
+# Frontend
+node_modules/
+
+# Build
+publish/
+*.zip
+
+# Env
+.env
+.env.local
