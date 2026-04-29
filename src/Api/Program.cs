@@ -1,41 +1,63 @@
+using Api.Endpoints;
+using Application;
+using Infrastructure;
+using Scalar.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+//Logging 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+//OpenAPI, Scalar
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, _, _) =>
+    {
+        document.Info.Title = "Product Catalog API";
+        document.Info.Version = "v1";
+        document.Info.Description =
+            "REST API for managing the product catalog. Built with .NET 10, Minimal API, Clean Architecture and CQRS.";
+        return Task.CompletedTask;
+    });
+});
+
+//CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy
+            .WithOrigins(
+                "http://localhost:4200", //Angular dev server
+                "http://localhost:80", //Docker
+                "http://frontend:80" //Docker Compose internal
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+//Services
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseExceptionHandler();
+app.UseCors("AllowAngularApp");
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options.Title = "Product Catalog API";
+        options.Theme = ScalarTheme.DeepSpace;
+    });
 }
 
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast");
+app.MapProductsEndpoints();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
