@@ -9,6 +9,7 @@ obj/
 
 # Frontend
 node_modules/
+*.angular/
 
 # Build
 publish/
