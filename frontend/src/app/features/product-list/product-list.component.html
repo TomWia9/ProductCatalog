@@ -1,0 +1,75 @@
+<div class="list-container">
+  <div class="list-header">
+    <h2 class="list-title">
+      <span class="title-icon">◈</span>
+      Product Catalog
+      <span class="product-count" *ngIf="!isLoading()">{{
+        products().length
+      }}</span>
+    </h2>
+    <button
+      class="refresh-btn"
+      (click)="loadProducts()"
+      [disabled]="isLoading()"
+    >
+      <span class="refresh-icon" [class.spinning]="isLoading()">↻</span>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Loading state -->
+  <div class="loading-state" *ngIf="isLoading()">
+    <div class="skeleton-row" *ngFor="let i of [1, 2, 3]"></div>
+  </div>
+
+  <!-- Error state -->
+  <div class="error-banner" *ngIf="error() && !isLoading()">
+    <span class="error-icon">⚠</span>
+    {{ error() }}
+    <button class="retry-link" (click)="loadProducts()">Try again</button>
+  </div>
+
+  <!-- Empty state -->
+  <div
+    class="empty-state"
+    *ngIf="!isLoading() && !error() && products().length === 0"
+  >
+    <div class="empty-icon">◻</div>
+    <p>No products yet. Add the first one!</p>
+  </div>
+
+  <!-- Products table -->
+  <div
+    class="table-wrapper"
+    *ngIf="!isLoading() && !error() && products().length > 0"
+  >
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th class="col-code">Code</th>
+          <th class="col-name">Name</th>
+          <th class="col-price">Price</th>
+          <th class="col-date">Added</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="product-row"
+          *ngFor="let product of products(); let i = index"
+          [style.animation-delay]="i * 60 + 'ms'"
+        >
+          <td class="col-code">
+            <span class="code-badge">{{ product.code }}</span>
+          </td>
+          <td class="col-name">{{ product.name }}</td>
+          <td class="col-price">
+            <span class="price-value">{{ product.price }} PLN</span>
+          </td>
+          <td class="col-date">
+            {{ product.createdAtUtc | date: "dd MMM yyyy, HH:mm" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

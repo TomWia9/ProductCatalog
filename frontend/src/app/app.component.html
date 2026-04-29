@@ -1,0 +1,32 @@
+<div class="app-shell">
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">◈</span>
+        <span class="brand-name">ProductCatalog</span>
+        <span class="brand-version">v1.0</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <div class="page-layout">
+      <!-- Sidebar: Add product form -->
+      <aside class="sidebar">
+        <app-product-form (productAdded)="onProductAdded()" />
+      </aside>
+
+      <!-- Main content: Product list -->
+      <section class="content">
+        <app-product-list />
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <span
+      >Product Catalog - Built with .NET 10 Minimal API · Angular 19 · Clean
+      Architecture · CQRS</span
+    >
+  </footer>
+</div>
