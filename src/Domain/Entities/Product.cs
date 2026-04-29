@@ -31,7 +31,9 @@ public sealed class Product
     public DateTime CreatedAtUtc { get; private set; }
 
     // Private constructor for EF / serialization
-    private Product() { }
+    private Product()
+    {
+    }
 
     /// <summary>
     /// Creates a new product instance with the specified properties.
