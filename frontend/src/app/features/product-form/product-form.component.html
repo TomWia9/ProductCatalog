@@ -19,13 +19,17 @@
         formControlName="code"
         autocomplete="off"
         spellcheck="false"
-      />
-      <span class="field-error" *ngIf="codeControl.touched && codeControl.hasError('required')">
-        Product code is required.
-      </span>
-      <span class="field-error" *ngIf="codeControl.touched && codeControl.hasError('maxlength')">
-        Code must not exceed 50 characters.
-      </span>
+        />
+      @if (codeControl.touched && codeControl.hasError('required')) {
+        <span class="field-error">
+          Product code is required.
+        </span>
+      }
+      @if (codeControl.touched && codeControl.hasError('maxlength')) {
+        <span class="field-error">
+          Code must not exceed 50 characters.
+        </span>
+      }
     </div>
 
     <!-- Name field -->
@@ -40,13 +44,17 @@
         placeholder="e.g. Dell XPS 15 Laptop"
         formControlName="name"
         autocomplete="off"
-      />
-      <span class="field-error" *ngIf="nameControl.touched && nameControl.hasError('required')">
-        Product name is required.
-      </span>
-      <span class="field-error" *ngIf="nameControl.touched && nameControl.hasError('maxlength')">
-        Name must not exceed 200 characters.
-      </span>
+        />
+      @if (nameControl.touched && nameControl.hasError('required')) {
+        <span class="field-error">
+          Product name is required.
+        </span>
+      }
+      @if (nameControl.touched && nameControl.hasError('maxlength')) {
+        <span class="field-error">
+          Name must not exceed 200 characters.
+        </span>
+      }
     </div>
 
     <!-- Price field -->
@@ -64,27 +72,35 @@
           formControlName="price"
           min="0.01"
           step="0.01"
-        />
+          />
       </div>
-      <span class="field-error" *ngIf="priceControl.touched && priceControl.hasError('required')">
-        Price is required.
-      </span>
-      <span class="field-error" *ngIf="priceControl.touched && priceControl.hasError('min')">
-        Price must be greater than zero.
-      </span>
+      @if (priceControl.touched && priceControl.hasError('required')) {
+        <span class="field-error">
+          Price is required.
+        </span>
+      }
+      @if (priceControl.touched && priceControl.hasError('min')) {
+        <span class="field-error">
+          Price must be greater than zero.
+        </span>
+      }
     </div>
 
     <!-- Success banner -->
-    <div class="success-banner" *ngIf="successMessage()">
-      <span class="status-icon">✓</span>
-      {{ successMessage() }}
-    </div>
+    @if (successMessage()) {
+      <div class="success-banner">
+        <span class="status-icon">✓</span>
+        {{ successMessage() }}
+      </div>
+    }
 
     <!-- Error banner -->
-    <div class="error-banner" *ngIf="errorMessage()">
-      <span class="status-icon">⚠</span>
-      {{ errorMessage() }}
-    </div>
+    @if (errorMessage()) {
+      <div class="error-banner">
+        <span class="status-icon">⚠</span>
+        {{ errorMessage() }}
+      </div>
+    }
 
     <!-- Submit button -->
     <button
@@ -92,16 +108,20 @@
       class="submit-btn"
       [disabled]="isSubmitting()"
       [class.is-loading]="isSubmitting()"
-    >
-      <span class="btn-text" *ngIf="!isSubmitting()">
-        <span class="btn-icon">+</span>
-        Add Product
-      </span>
-      <span class="btn-spinner" *ngIf="isSubmitting()">
-        <span class="spinner-dot"></span>
-        <span class="spinner-dot"></span>
-        <span class="spinner-dot"></span>
-      </span>
+      >
+      @if (!isSubmitting()) {
+        <span class="btn-text">
+          <span class="btn-icon">+</span>
+          Add Product
+        </span>
+      }
+      @if (isSubmitting()) {
+        <span class="btn-spinner">
+          <span class="spinner-dot"></span>
+          <span class="spinner-dot"></span>
+          <span class="spinner-dot"></span>
+        </span>
+      }
     </button>
 
   </form>
