@@ -1,0 +1,15 @@
+**/bin/
+**/obj/
+
+**/node_modules/
+**/.angular/
+
+.git/
+.gitignore
+
+tests/
+
+**/*.user
+**/.vs/
+README.md
+docker-compose.yml

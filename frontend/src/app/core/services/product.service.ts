@@ -11,7 +11,7 @@ import { CreateProductRequest, Product } from '../models/product.model';
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = `${environment.apiUrl}/products`;
+  private readonly baseUrl = `${environment.apiUrl}/api/products`;
 
   /**
    * Retrieves all products from the catalog.
